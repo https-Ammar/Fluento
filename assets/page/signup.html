@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style/main.css">
+</head>
+
+<body>
+    <section class="custom-login-section">
+        <div class="custom-form-box">
+            <div class="custom-form-value">
+                <form action="">
+                    <div class="custom-form-title">
+                        <h2>Student Login</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    </div>
+
+                    <div class="custom-inputbox">
+
+                        <div class="flex">
+                            <input type="text" required />
+                            <ion-icon name="mail-outline"></ion-icon>
+
+                        </div>
+
+                        <label>Username</label>
+                    </div>
+
+
+                    <div class="custom-inputbox">
+
+                        <div class="flex">
+                            <input type="text" required />
+                            <ion-icon name="mail-outline"></ion-icon>
+
+                        </div>
+
+                        <label>Email</label>
+                    </div>
+
+
+                    <div class="custom-inputbox">
+
+
+                        <div class="flex">
+                            <input type="password" id="password" required />
+
+                            <ion-icon id="togglePassword" name="eye-outline"></ion-icon>
+
+                        </div>
+
+                        <label>Password</label>
+                    </div>
+
+                    <div class="custom-forget">
+                        <label><input type="checkbox" /> Remember Me</label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="custom-button">Log in</button>
+
+                    <div class="custom-register">
+                        <p>Don't have an account? <a href="#">Register</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Show/Hide Password Script -->
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+
+        togglePassword.addEventListener('click', () => {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            togglePassword.setAttribute('name',
+                type === 'password' ? 'eye-outline' : 'eye-off-outline');
+        });
+    </script>
+</body>
+
+</html>
