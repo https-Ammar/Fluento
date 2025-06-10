@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Login</title>
+    <title>Fluento Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style/main.css">
 </head>
@@ -15,7 +15,7 @@
             <div class="custom-form-value">
                 <form action="">
                     <div class="custom-form-title">
-                        <h2>Student Login</h2>
+                        <h2>Fluento Register</h2>
                         <p>Lorem ipsum dolor sit amet consectetur.</p>
                     </div>
 
@@ -58,13 +58,12 @@
 
                     <div class="custom-forget">
                         <label><input type="checkbox" /> Remember Me</label>
-                        <a href="#">Forgot password?</a>
                     </div>
 
                     <button type="submit" class="custom-button">Log in</button>
 
                     <div class="custom-register">
-                        <p>Don't have an account? <a href="#">Register</a></p>
+                        <p>Don't have an account? <a href="./login.html">Log in</a></p>
                     </div>
                 </form>
             </div>
@@ -76,18 +75,7 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <!-- Show/Hide Password Script -->
-    <script>
-        const togglePassword = document.getElementById('togglePassword');
-        const password = document.getElementById('password');
-
-        togglePassword.addEventListener('click', () => {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-
-            togglePassword.setAttribute('name',
-                type === 'password' ? 'eye-outline' : 'eye-off-outline');
-        });
-    </script>
+    <script src="../app/app.js"></script>
 </body>
 
 </html>

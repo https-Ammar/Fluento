@@ -300,8 +300,7 @@ main.main {
 }
 
 #chat .chat__conversation-board {
-  padding: 1em 0 2em;
-  height: calc(100vh - 55px - 2em - 25px * 2 - 0.5em - 3em);
+  padding: 1em;
   overflow: auto;
 }
 
@@ -401,7 +400,7 @@ main.main {
 }
 
 #chat .chat__conversation-board__message__context {
-  max-width: 55%;
+  /* max-width: 55%; */
   align-self: flex-end;
 }
 
