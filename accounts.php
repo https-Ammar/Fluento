@@ -22,27 +22,6 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>الحسابات</title>
-    <style>
-        .user-card {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .user-card img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-
-        .user-info {
-            flex-grow: 1;
-        }
-    </style>
 </head>
 
 <body>

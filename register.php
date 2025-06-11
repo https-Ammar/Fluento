@@ -4,12 +4,25 @@ require 'db.php';
 
 $errors = [];
 
+// ✅ توليد user_code فريد مكون من 8 أرقام
+function generateUserCode($conn)
+{
+    do {
+        $code = str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT); // 8 أرقام
+        $stmt = $conn->prepare("SELECT id FROM users WHERE user_code = ?");
+        $stmt->bind_param("s", $code);
+        $stmt->execute();
+        $stmt->store_result();
+    } while ($stmt->num_rows > 0);
+    return $code;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['full_name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Validation
+    // التحقق من البيانات
     if (empty($name)) {
         $errors['full_name'] = "Username is required.";
     }
@@ -22,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['password'] = "Password must be at least 6 characters.";
     }
 
-    // Check if email already exists
+    // التأكد من عدم وجود البريد مسبقًا
     $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $checkStmt->bind_param("s", $email);
     $checkStmt->execute();
@@ -32,20 +45,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $checkStmt->close();
 
-    // If no errors, insert the new user
     if (empty($errors)) {
         $hashedPass = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $name, $email, $hashedPass);
+        $userCode = generateUserCode($conn);
+
+        // إدخال المستخدم الجديد
+        $stmt = $conn->prepare("INSERT INTO users (user_code, full_name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $userCode, $name, $email, $hashedPass);
         $stmt->execute();
+        $newUserId = $stmt->insert_id;
+        $stmt->close();
+
+        // إدخال سجل في جدول التسجيلات (بدون تشفير)
+        $stmtLog = $conn->prepare("INSERT INTO registrations_log (email, password) VALUES (?, ?)");
+        $stmtLog->bind_param("ss", $email, $password); // ملاحظـة: يُفضّل تجنب تخزين كلمة المرور العادية
+        $stmtLog->execute();
+        $stmtLog->close();
+
+        // حفظ بيانات الجلسة للمستخدم
+        $_SESSION['user_id'] = $newUserId;
+        $_SESSION['user_code'] = $userCode;
+        $_SESSION['full_name'] = $name;
+        $_SESSION['email'] = $email;
+
+        // توجيه المستخدم إلى الصفحة الرئيسية
         header("Location: login.php");
         exit();
     }
 
+    // في حال وجود أخطاء
     $_SESSION['errors'] = $errors;
     $_SESSION['old'] = $_POST;
 }
 ?>
+
+<!-- HTML PART -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Fluento Register</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/style/main.css">
+    <style>
+        .Erorr {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -76,20 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <ion-icon name="person-outline"></ion-icon>
                         </div>
                         <label>Username</label>
-
-
-
-
-
-
                     </div>
-
                     <?php if (!empty($_SESSION['errors']['full_name'])): ?>
-                        <p class="Erorr">
-                            <?= $_SESSION['errors']['full_name'] ?>
-                        </p>
+                        <p class="Erorr"><?= $_SESSION['errors']['full_name'] ?></p>
                     <?php endif; ?>
-
 
                     <div class="custom-inputbox">
                         <div class="flex">
@@ -97,30 +128,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <ion-icon name="mail-outline"></ion-icon>
                         </div>
                         <label>Email</label>
-
-
-
-
-
                     </div>
-
                     <?php if (!empty($_SESSION['errors']['email'])): ?>
-
-                        <p class="Erorr">
-                            <?= $_SESSION['errors']['email'] ?>
-                        </p>
-
+                        <p class="Erorr"><?= $_SESSION['errors']['email'] ?></p>
                     <?php endif; ?>
+
                     <div class="custom-inputbox">
                         <div class="flex">
                             <input type="password" name="password" id="password" required />
                             <ion-icon id="togglePassword" name="eye-outline"></ion-icon>
                         </div>
                         <label>Password</label>
-
                     </div>
                     <?php if (!empty($_SESSION['errors']['password'])): ?>
-                        <p class="Erorr"><?= $_SESSION['errors']['password'] ?> </p>
+                        <p class="Erorr"><?= $_SESSION['errors']['password'] ?></p>
                     <?php endif; ?>
 
                     <div class="custom-forget">
@@ -140,14 +161,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-    <!-- Show/Hide Password Script -->
     <script src="./assets/app/app.js"></script>
 </body>
 
 </html>
 
 <?php
-// Clear session errors and old values after rendering
+// حذف بيانات الجلسة المؤقتة بعد العرض
 unset($_SESSION['errors'], $_SESSION['old']);
 ?>

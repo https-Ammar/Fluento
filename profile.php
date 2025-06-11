@@ -9,12 +9,11 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// عند إرسال النموذج (تحديث البيانات)
+// تحديث البيانات
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['full_name']);
     $notifications_enabled = isset($_POST['notifications_enabled']) ? 1 : 0;
 
-    // معالجة الصورة إن وُجدت
     if (!empty($_FILES['profile_image']['name'])) {
         $image_name = time() . '_' . basename($_FILES['profile_image']['name']);
         $target = 'uploads/' . $image_name;
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // جلب بيانات المستخدم
-$stmt = $conn->prepare("SELECT full_name, email, profile_image, notifications_enabled FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT full_name, email, profile_image, notifications_enabled, user_code FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
@@ -100,6 +99,13 @@ $user = $stmt->get_result()->fetch_assoc();
             display: inline-block;
             margin-top: 15px;
         }
+
+        .info {
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            color: #555;
+        }
     </style>
 </head>
 
@@ -131,6 +137,14 @@ $user = $stmt->get_result()->fetch_assoc();
             <div>
                 <label>البريد الإلكتروني:</label><br>
                 <input type="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
+            </div>
+
+            <div class="info">
+                <label>الرقم التعريفي (ID):</label><br>
+                <span
+                    style="direction: ltr; display:inline-block; background:#eee; padding:5px 10px; border-radius:6px;">
+                    <?= htmlspecialchars($user['user_code']) ?>
+                </span>
             </div>
 
             <div>

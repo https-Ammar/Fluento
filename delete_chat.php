@@ -2,28 +2,29 @@
 session_start();
 require 'db.php';
 
-// التحقق من تسجيل الدخول
-if (!isset($_SESSION['user_id'])) {
-    exit("غير مسموح");
+if (!isset($_SESSION['user_id']) || !isset($_GET['user_id'])) {
+    header("Location: index.php");
+    exit();
 }
 
-$current_user = $_SESSION['user_id'];
+$current_user = intval($_SESSION['user_id']);
 $other_user = intval($_GET['user_id']);
 
-// تحقق من عدم وجود سجل مكرر في جدول hidden_chats
-$check = $conn->prepare("SELECT * FROM hidden_chats WHERE user_id = ? AND hidden_with_id = ?");
-$check->bind_param("ii", $current_user, $other_user);
-$check->execute();
-$result = $check->get_result();
-
-if ($result->num_rows === 0) {
-    // إذا لم تكن المحادثة مخفية، قم بإضافتها
-    $stmt = $conn->prepare("INSERT INTO hidden_chats (user_id, hidden_with_id) VALUES (?, ?)");
-    $stmt->bind_param("ii", $current_user, $other_user);
-    $stmt->execute();
+if ($current_user === $other_user || $other_user <= 0) {
+    header("Location: index.php");
+    exit();
 }
 
-// إعادة التوجيه إلى الصفحة السابقة
-header("Location: " . $_SERVER['HTTP_REFERER']);
+// حذف جميع الرسائل بين الطرفين
+$stmt = $conn->prepare("
+    DELETE FROM messages 
+    WHERE (sender_id = ? AND receiver_id = ?) 
+       OR (sender_id = ? AND receiver_id = ?)
+");
+$stmt->bind_param("iiii", $current_user, $other_user, $other_user, $current_user);
+$stmt->execute();
+$stmt->close();
+
+header("Location: chat.php?user_id=$other_user"); // أو رجّعه للصفحة اللي تحب
 exit();
 ?>
