@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            list-style: none;
+            color: white;
+            text-decoration: none !important;
+
+        }
+
+        :root {
+            --maize-crayola: #FEC347;
+            --white: #FFFFFF;
+            --gray-x11: #BBBAB9;
+            --chinese-black: #111111;
+            --deep-carmine-pink: #F63B27;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, var(--maize-crayola) 0%, transparent 20%), black;
+            color: var(--white);
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .button {
+            background-color: var(--maize-crayola);
+            color: var(--chinese-black);
+        }
+
+        .alert {
+            background-color: var(--deep-carmine-pink);
+            color: var(--white);
+        }
+
+        .img_user,
+        .box_storie_user {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 2px solid var(--maize-crayola);
+            cursor: pointer;
+        }
+
+        .box_storie_user {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .box_storie_user.bg_img {
+            margin-top: -6vh !important;
+        }
+
+        .bg_img {
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .name_user {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        ul.d-flex.gap-2 li {
+            background: rgba(17, 17, 17, 0.5);
+            padding: 10px;
+            width: 45px;
+            display: flex;
+            align-items: center;
+            height: 45px;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        ul.d-flex.align-items-center.justify-content-between li .link_page {
+            background: rgba(17, 17, 17, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            padding: 10px 20px !important;
+            color: var(--gray-x11);
+        }
+
+        section.stories.d-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .box_stories {
+            height: 20vh;
+            border-radius: 15px;
+            margin: 5px !important;
+        }
+
+        .box_stories_user.text-canter {
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        h2.stories_user {
+            font-size: large;
+            color: var(--gray-x11);
+            font-weight: normal;
+        }
+
+        .postar {
+            height: 45vh;
+            border-radius: 10px;
+        }
+
+        .postar_user {
+            margin: 5vh 0 !important;
+        }
+
+        .like.d-flex.align-items-center.justify-content-between {
+            margin-top: 20px !important;
+        }
+
+        .user_name_lorem {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        li.react {
+            border-radius: 30px !important;
+            height: auto !important;
+            padding: 5px 10px !important;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .img_user_info {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .img_user {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background-color: #ccc;
+            /* صورة مؤقتة */
+        }
+
+        .info_user {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user_name_lorem {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .react svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .react {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .count_like,
+        .coun_like {
+            font-size: 14px;
+        }
+
+        li.react {
+            width: max-content !important;
+        }
+
+        p.user_name_lorem {
+            color: var(--gray-x11);
+
+        }
+
+        span.tag {
+            padding: 6px 10px !important;
+            margin: 10px 0 !important;
+            background: rgba(254, 195, 71, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            color: #FEC347;
+            box-shadow: 0 4px 20px rgba(254, 195, 71, 0.1);
+        }
+
+        .add-tag {
+
+            color: var(--gray-x11) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="p-3">
+
+        <!-- Navbar -->
+        <nav class="d-flex align-items-center justify-content-between">
+            <div class="img_user_info d-flex align-items-center gap-3">
+                <div class="img_user bg_img" style="background-image: url(./images/img-05.jpg);"></div>
+                <div class="info_user">
+                    <h2 class="name_user">Ammar</h2>
+                    <p class="user_name">Lorem, ipsum dolor.</p>
+                </div>
+            </div>
+            <ul class="d-flex gap-2">
+                <li class="icon_search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </li>
+                <li class="icon_bell">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-bell" viewBox="0 0 16 16">
+                        <path
+                            d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92z" />
+                    </svg>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Navigation Buttons -->
+        <div class="all_ptn m-3 mt-4">
+            <ul class="d-flex align-items-center justify-content-between">
+                <li><a href="#" class="link_page">Search</a></li>
+                <li><a href="#" class="link_page">Following</a></li>
+                <li><a href="#" class="link_page">Following</a></li>
+                <li><a href="#" class="link_page">Following</a></li>
+            </ul>
+        </div>
+
+        <!-- Swiper Stories -->
+        <section class="swiper mySwiper mt-5">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="box_stories_user text-center">
+                        <div class="box_stories bg_img" style="background-image: url(./images/img-03.jpg);"></div>
+                        <div class="box_storie_user bg_img" style="background-image: url(./images/img-03.jpg);"></div>
+                        <div class="box_stories_info mt-5">
+                            <h2 class="stories_user">Ammar</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box_stories_user text-center">
+                        <div class="box_stories bg_img" style="background-image: url(./images/img-04.jpg);"></div>
+                        <div class="box_storie_user bg_img" style="background-image: url(./images/img-04.jpg);"></div>
+                        <div class="box_stories_info mt-5">
+                            <h2 class="stories_user">Ammar</h2>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="swiper-slide">
+                    <div class="box_stories_user text-center">
+                        <div class="box_stories bg_img" style="background-image: url(./images/img-05.jpg);"></div>
+                        <div class="box_storie_user bg_img" style="background-image: url(./images/img-05.jpg);"></div>
+                        <div class="box_stories_info mt-5">
+                            <h2 class="stories_user">Ammar</h2>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="swiper-slide">
+                    <div class="box_stories_user text-center">
+                        <div class="box_stories bg_img" style="background-image: url(./images/img-06.jpg);"></div>
+                        <div class="box_storie_user bg_img" style="background-image: url(./images/img-06.jpg);"></div>
+                        <div class="box_stories_info mt-5">
+                            <h2 class="stories_user">Ammar</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Post Section -->
+        <section class="postar_user">
+            <div class="postar bg_img" style="background-image: url(./images/img-03.jpg);"></div>
+
+            <div class="like d-flex align-items-center justify-content-between">
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path
+                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                        </svg> <span class="count_like">12</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-chat-dots" viewBox="0 0 16 16">
+                            <path
+                                d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            <path
+                                d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125" />
+                        </svg> <span class="coun_like">0</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-send" viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg> <span class="count_like">12</span></li>
+                </ul>
+
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-share" viewBox="0 0 16 16">
+                            <path
+                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" />
+                        </svg>
+
+
+                        <span class="count_link">Reaplay</span>
+                    </li>
+                </ul>
+
+            </div>
+
+
+
+            <div class="img_user_info mt-3">
+                <div class="img_user"></div>
+                <div class="info_user">
+                    <h2 class="name_user">Ammar</h2>
+                    <p class="user_name_lorem">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere nostrum alias quam consequuntur,
+                        voluptatem voluptatibus corrupti blanditiis explicabo! Corrupti, temporibus!
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="tags-container d-flex align-items-center gap-2 mt-3">
+                <span class="tag">Fashion</span>
+                <span class="tag">Beauty</span>
+                <span class="tag">Food</span>
+                <span class=" add-tag">+All Tags</span>
+            </div>
+
+
+        </section>
+        <!-- Post Section -->
+        <section class="postar_user">
+            <div class="postar bg_img" style="background-image: url(./images/img-04.jpg);"></div>
+
+            <div class="like d-flex align-items-center justify-content-between">
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path
+                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                        </svg> <span class="count_like">12</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-chat-dots" viewBox="0 0 16 16">
+                            <path
+                                d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            <path
+                                d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125" />
+                        </svg> <span class="coun_like">0</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-send" viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg> <span class="count_like">12</span></li>
+                </ul>
+
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-share" viewBox="0 0 16 16">
+                            <path
+                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" />
+                        </svg>
+
+
+                        <span class="count_link">Reaplay</span>
+                    </li>
+                </ul>
+
+            </div>
+
+
+
+            <div class="img_user_info mt-3">
+                <div class="img_user"></div>
+                <div class="info_user">
+                    <h2 class="name_user">Ammar</h2>
+                    <p class="user_name_lorem">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere nostrum alias quam consequuntur,
+                        voluptatem voluptatibus corrupti blanditiis explicabo! Corrupti, temporibus!
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="tags-container d-flex align-items-center gap-2 mt-3">
+                <span class="tag">Fashion</span>
+                <span class="tag">Beauty</span>
+                <span class="tag">Food</span>
+                <span class=" add-tag">+All Tags</span>
+            </div>
+
+
+        </section>
+
+
+        <!-- Post Section -->
+        <section class="postar_user">
+            <div class="postar bg_img" style="background-image: url(./images/img-06.jpg);"></div>
+
+            <div class="like d-flex align-items-center justify-content-between">
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path
+                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                        </svg> <span class="count_like">12</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-chat-dots" viewBox="0 0 16 16">
+                            <path
+                                d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            <path
+                                d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125" />
+                        </svg> <span class="coun_like">0</span></li>
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-send" viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg> <span class="count_like">12</span></li>
+                </ul>
+
+                <ul class="d-flex align-items-center gap-2">
+                    <li class="react"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-share" viewBox="0 0 16 16">
+                            <path
+                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" />
+                        </svg>
+
+
+                        <span class="count_link">Reaplay</span>
+                    </li>
+                </ul>
+
+            </div>
+
+
+
+            <div class="img_user_info mt-3">
+                <div class="img_user"></div>
+                <div class="info_user">
+                    <h2 class="name_user">Ammar</h2>
+                    <p class="user_name_lorem">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere nostrum alias quam consequuntur,
+                        voluptatem voluptatibus corrupti blanditiis explicabo! Corrupti, temporibus!
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="tags-container d-flex align-items-center gap-2 mt-3">
+                <span class="tag">Fashion</span>
+                <span class="tag">Beauty</span>
+                <span class="tag">Food</span>
+                <span class=" add-tag">+All Tags</span>
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        new Swiper(".mySwiper", {
+            slidesPerView: 3,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                0: { slidesPerView: 3 },
+                768: { slidesPerView: 2 },
+                992: { slidesPerView: 3 }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
