@@ -48,6 +48,38 @@
             color: var(--white);
         }
 
+        .glass-bg {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content.glass-bg.text-white.rounded-4.p-4.position-relative {
+            height: 100vh;
+            display: flex;
+            /* align-items: center; */
+            justify-content: center;
+            border: navajowhite;
+            border-radius: 0 !important;
+        }
+
+        input.form-control.form-control-lg.bg-transparent.text-white.border-white {
+            all: unset;
+            width: 100%;
+            font-size: 1.25rem;
+            background-color: transparent;
+            color: white;
+            border-bottom: 2px solid white;
+            padding: 0.5rem 0;
+        }
+
+        input.form-control.form-control-lg.bg-transparent.text-white.border-white:focus {
+            outline: none;
+            box-shadow: none;
+            border-color: white;
+        }
+
         .img_user,
         .box_storie_user {
             width: 75px;
@@ -307,13 +339,36 @@
                 </div>
             </div>
             <ul class="d-flex gap-2">
-                <li class="icon_search">
+                <!-- الزر اللي بيظهر الsearch -->
+                <li class="icon_search" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-search" viewBox="0 0 16 16">
                         <path
                             d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                     </svg>
                 </li>
+
+                <!-- مودال الsearch -->
+                <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content glass-bg text-white rounded-4 p-4 position-relative">
+
+                            <!-- زر إغلاق -->
+                            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+
+                            <!-- محتوى الsearch -->
+                            <h4 class="mb-3">search</h4>
+                            <input type="text"
+                                class="form-control form-control-lg bg-transparent text-white border-white"
+                                placeholder="اsearch هنا...">
+                        </div>
+                    </div>
+                </div>
+
+
+
+
                 <li class="icon_bell">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-bell" viewBox="0 0 16 16">
