@@ -234,6 +234,62 @@
             width: 25px;
             height: 15px;
         }
+
+        .comment-box {
+            background-color: #1e1e1e;
+            color: #fff;
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 400px;
+        }
+
+        .comment-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            flex: 1;
+            outline: none;
+        }
+
+        .comment-box input::placeholder {
+            color: #ccc;
+        }
+
+        .avatars {
+            display: flex;
+            align-items: center;
+            gap: -10px;
+        }
+
+        .avatars .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #1e1e1e;
+            object-fit: cover;
+            margin-left: -10px !important;
+        }
+
+        .avatars .extra {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #333;
+            color: white;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #1e1e1e;
+        }
+
+        .comment-box {
+            padding: 10px !important;
+            margin-top: 1vh !important;
+        }
     </style>
 </head>
 
@@ -386,6 +442,25 @@
             </div>
 
 
+            <div class="comment-box">
+                <div class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white"
+                        class="bi bi-chat-dots me-2" viewBox="0 0 16 16">
+                        <path
+                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6.414a1 1 0 0 0-.707.293l-2.647 2.647A.5.5 0 0 1 2 15.5V2z" />
+                        <path
+                            d="M3 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm3 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm3 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                    </svg>
+                    <input type="text" placeholder="Add a comment...">
+                </div>
+
+                <div class="avatars ms-2">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" class="avatar" />
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" class="avatar"
+                        style="margin-left: -10px;" />
+                    <div class="extra" style="margin-left: -10px;">+6</div>
+                </div>
+            </div>
         </section>
         <!-- Post Section -->
         <section class="postar_user">
